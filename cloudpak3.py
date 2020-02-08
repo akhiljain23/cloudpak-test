@@ -1,5 +1,6 @@
 import os
 import datetime
+import pandas
 from cloudant.client import Cloudant
 from cloudant import design_document
 from cloudant import database
@@ -47,14 +48,43 @@ print(result)
 res = db_obj.get_view_result('_design/workspace', 'workspacecountbyaccount',
     raw_result=True, include_docs=True, skip=100, limit=100, reduce=False)
 res = db_obj.get_view_result('_design/workspace', 'workspacecountbyaccount',
-    raw_result=True, include_docs=True, limit=100, reduce=False)
-print(res)
+    raw_result=True, include_docs=True, reduce=False)
+final_res = []
+for row in res['rows']:
+    cr_at = (row['doc']['created_at'])
+    print(cr_at[:11])
+    cr_at = datetime.datetime.strptime(cr_at[:10], '%Y-%m-%d')
+    if cr_at >= startDate and cr_at <= endDate:
+        entry = {
+            "account":row['doc']['account'],
+            "workspace_id":row['doc']['_id'],
+            "workspace_status":row['doc']['status'],
+            "workspace_createdDate": row['doc']['created_at'],
+            "offering_installed_on" : "2020-01-31T07:00:42+0000",
+            "offering_destroyed_on" : "2020-01-31T07:00:42+0000",
+            "Offering_name" : "",
+            "Offering_id" : "",
+            "Offering_url" : "",
+            "cluster_id":"bl6glr3201d858oadjh0",
+            "cluster_type" : "openshift",
+            "cluster_worker_count": "4",
+            "cluster_worker_machine_type" : "b3c.4x16.encrypted",
+            "cluster_created_on" : "2020-01-29T07:00:42+0000"
+        }
+        final_res.append(entry)
+dataframe = pandas.DataFrame(final_res)
+print(dataframe)
+open('qwerty.csv', 'a').close()
+dataframe.to_csv("qwerty.csv")
+print(len(final_res))
+
 
 
 
 
 a = "1994-01-23"
 date_time_obj = datetime.datetime.strptime(a, '%Y-%m-%d')
+print(date_time_obj)
 
 b = "2020-01-29T07:00:42+0000"
 date_time_obj2 = datetime.datetime.strptime(b, '%Y-%m-%dT%H:%M:%S+%f')
