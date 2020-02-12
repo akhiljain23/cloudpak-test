@@ -48,7 +48,8 @@ def generate_records(start_date, end_date):
                 "cluster_worker_count": row['doc']['shared_data'].get('worker_count', 'Not Available'),
                 "cluster_worker_machine_type" : row['doc']['shared_data'].get('worker_machine_type', 'Not Available'),
                 "cluster_created_on" : row['doc']['shared_data'].get('cluster_created_on', 'Not Available'),
-                "cluster_region" : row['doc']['shared_data'].get('region', 'Not Available')
+                "cluster_region" : row['doc']['shared_data'].get('region', 'Not Available'),
+                "deleted": row['doc'].get('deleted', 'true')
             }
             final_res.append(entry)
     dataframe = pandas.DataFrame(final_res)
