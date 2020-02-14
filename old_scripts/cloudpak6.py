@@ -72,6 +72,7 @@ if __name__ == "__main__":
 
     secret = os.environ['SECRET']
     print(secret)
+    print("Above is secret$$$$$$$$$$$$$$$$$$$")
     if end_date >= start_date:
         generate_records(start_date, end_date)
     else:

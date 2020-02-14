@@ -1,0 +1,41 @@
+pipeline {
+   agent {
+      label 'custom-image-schematics'
+    }
+   environment {
+        SECRET = credentials('secret')
+    }
+    stages {
+        stage('Get Env variables') {
+            steps {
+               script{
+                  sh """
+                  echo "${env.START_DATE}" >/tmp/start_date.txt
+                  cat /tmp/start_date.txt
+                  echo "${env.END_DATE}" >/tmp/end_date.txt
+                  cat /tmp/end_date.txt
+                  """
+             }
+           }
+         }
+        stage('Schematics dev Backup') {
+           steps {
+              script{
+                 sh '''
+                  #!/bin/bash
+                  echo "Schematics Dev Backup initiated"
+                  export PATH=${PATH}:/usr/local/bin
+                  which python
+                  pip3 install --user wheel
+                  pip3 install --user pandas
+                  pip3 install --user datetime 
+                  pip3 install --user cloudant
+
+                  python3 old_scripts/cloudpak6.py
+                  echo "Schematics Backup is done"
+                  '''
+                }
+            }   
+        }
+   }
+}
