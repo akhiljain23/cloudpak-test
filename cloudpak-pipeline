@@ -1,7 +1,5 @@
 pipeline {
-   agent {
-      label 'custom-image-schematics'
-    }
+   agent any
    environment {
         SECRET = credentials('secret')
     }

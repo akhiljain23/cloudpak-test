@@ -70,9 +70,13 @@ if __name__ == "__main__":
     end_date = datetime.datetime.strptime(end_date, '%Y-%m-%d')
     print("End date for getting records",end_date)
 
-    secret = os.environ['SECRET']
+    secret = os.environ['abcdef']
     print(secret)
     print("Above is secret$$$$$$$$$$$$$$$$$$$")
+    if secret == "secret":
+        print("HOORAYYYYYYYYYYYYYYY")
+    else:
+        print("SADDDDDDDDDDDD")
     if end_date >= start_date:
         generate_records(start_date, end_date)
     else:
